@@ -3,7 +3,7 @@ PROG := sinx
 SOURCE := main.cpp
 HEADERS :=
 LIBS :=
-OBJECTS := $(SOURCE:.cpp=.o)
+OBJECTS = $(SOURCE:.cpp=.o)
 
 INCLUDE_PATH := ./include
 
