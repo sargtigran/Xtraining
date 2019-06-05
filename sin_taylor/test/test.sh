@@ -2,7 +2,7 @@
 
 rm -rf output.txt
 
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../libs
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./libs
 
 
 if ! [ -f "input.txt" ]
