@@ -1,8 +1,9 @@
 
-/// @brief Program for calculating SIN(x) by Taylor series
 
+/// Intrnal header
+#include "tsin.hpp"
 
-///
+/// Standard headers
 #include <fstream>
 #include <iostream>
 #include <cmath>
@@ -43,20 +44,5 @@ double tsin(double x)
         res = res + sign * ( p / (double)f );
         sign *= -1;
     }
-}
-
-int main ()
-{
-    std::ifstream input("input.txt");
-
-    double x = 0.0;
-    if (input.is_open()) {
-        while (! input.eof()) {
-            input >> x;
-            std::cout << "sin(" << x << ") = ";
-            std::cout << tsin(x) << std::endl;
-        }
-    }
-
-    return 0;
+    return res;
 }
