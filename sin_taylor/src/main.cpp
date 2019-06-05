@@ -20,6 +20,8 @@ unsigned long factorial(unsigned n)
  */
 double radians(double x)
 {
+    const double PI = 3.14159265358979323;
+    return x / 180.0 * PI;
 }
 
 
