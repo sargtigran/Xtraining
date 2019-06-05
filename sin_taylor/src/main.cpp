@@ -9,22 +9,25 @@
 
 
 ///factorial
-long factorial(int n)
+unsigned long factorial(unsigned n)
 {
-
+    if (0 == n) return 1;
+    return n * factorial(n - 1);
 }
 
 /// function calculating SIN function for given x
 double tsin(double x)
 {
     ///
-    const double pi = 3.14159265358979323846;
-    const int N = 10;
+    onst unsigned int N = 15;
     double res = 0.0;
-    for (int n = 1; n < N; n += 2) {
+    int sign = 1;
+
+    for (unsigned n = 1; n < N; n += 2) {
         double p = std::pow(x, n);
-        long f = factorial(n);
-        res += p / f;
+        unsigned long f = factorial(n);
+        res = res + sign * ( p / (double)f );
+        sign *= -1;
     }
 }
 
