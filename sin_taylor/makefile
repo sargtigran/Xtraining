@@ -30,10 +30,7 @@ $(PROG): $(OBJECTS)
 	$(CC) -c -fPIC $(SRC_PATH)/$(SOURCES) -I$(INCLUDE_PATH) -o $(OBJ_PATH)/$@ 
 	
 
-.PHONY: claen test
+.PHONY: claen
 clean:
 	rm -rf $(OBJ_PATH) $(BIN_PATH)
 
-
-test:
-	@mkdir -p test

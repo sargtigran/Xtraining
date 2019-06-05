@@ -1,10 +1,10 @@
 
 /// @brief Program for calculating SIN(x) by Taylor series
 
-//Internal headers
+/// Internal headers
 #include "tsin.hpp"
 
-///
+/// Standard headers
 #include <fstream>
 #include <iostream>
 
