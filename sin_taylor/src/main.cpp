@@ -8,23 +8,35 @@
 #include <cmath>
 
 
-///factorial
+/// @brief Returns factorial of n
 unsigned long factorial(unsigned n)
 {
     if (0 == n) return 1;
     return n * factorial(n - 1);
 }
 
-/// function calculating SIN function for given x
+/**
+ * @brief returns the value of x in radians
+ */
+double radians(double x)
+{
+}
+
+
+/**
+ * @brief tsin calculating SIN function for given x degree via Taylor series
+ * @param x is in degrees
+ */
 double tsin(double x)
 {
     ///
-    onst unsigned int N = 15;
+    const unsigned int N = 15;
     double res = 0.0;
     int sign = 1;
 
+    double x_rad = radians(x);
     for (unsigned n = 1; n < N; n += 2) {
-        double p = std::pow(x, n);
+        double p = std::pow(x_rad, n);
         unsigned long f = factorial(n);
         res = res + sign * ( p / (double)f );
         sign *= -1;
