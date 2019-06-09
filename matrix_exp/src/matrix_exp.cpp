@@ -90,7 +90,20 @@ void AddMatrix(const Matrix& a, const Matrix& b, Matrix& c) {
     }
 };
 
-void MulMatrix(const Matrix&, const Matrix&, Matrix&) {};
+void MulMatrix(const Matrix& a, const Matrix& b, Matrix& c) {
+    assert(a.getNumColumns() == b.getNumRows() && "Invalid matrix sizes");
+
+    c.setSizes(a.getNumRows(), b.getNumColumns());
+    for (IndexType i = 0; i < a.getNumRows(); ++i) {
+        for (IndexType j = 0; j < b.getNumColumns(); ++j) {
+            ElementType s = 0;
+            for (IndexType k = 0; k < a.getNumColumns(); ++k) {
+                s += a.getElement(i, k) * b.getElement(k, j);
+            }
+            c.setElement(i, j, s);
+        }
+    }
+};
 
 bool VerifyCompatibility(const Matrix&, const Matrix&, const Matrix&, const Matrix&) {
     return false;
