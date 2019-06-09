@@ -98,6 +98,7 @@ void MulMatrix(const Matrix& a, const Matrix& b, Matrix& c) {
         for (IndexType j = 0; j < b.getNumColumns(); ++j) {
             ElementType s = 0;
             for (IndexType k = 0; k < a.getNumColumns(); ++k) {
+                //TODO: set assertion for overflow
                 s += a.getElement(i, k) * b.getElement(k, j);
             }
             c.setElement(i, j, s);
@@ -105,11 +106,16 @@ void MulMatrix(const Matrix& a, const Matrix& b, Matrix& c) {
     }
 };
 
-bool VerifyCompatibility(const Matrix&, const Matrix&, const Matrix&, const Matrix&) {
-    return false;
+bool VerifyCompatibility(const Matrix& a, const Matrix& b, const Matrix& c, const Matrix& d) {
+    return a.getNumRows() == b.getNumRows() && a.getNumColumns() == b.getNumColumns()
+             && c.getNumRows() == d.getNumRows() && c.getNumColumns() == d.getNumColumns()
+             && a.getNumColumns() == c.getNumRows();
 }
 
-void ErrorReport(const std::string& msg) {}
+void ErrorReport(const std::string& msg) {
+    std::cerr << "ERROR: " << msg << std::endl;
+}
+
 
 
 int main ()
