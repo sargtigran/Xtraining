@@ -28,6 +28,12 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <cassert>
+#include <limits>
+
+typedef unsigned int IndexType;
+typedef unsigned int ElementType;
+
 
 struct InputFile { 
     InputFile(const std::string& name) {}
@@ -40,7 +46,24 @@ struct OutputFile {
     OutputFile(const std::string& name) {}
 };
 
-struct Matrix { };
+struct Matrix {
+    
+    IndexType getNumRows() const {
+        return 0;
+    }
+
+    IndexType getNumColumns() const {
+        return 0;
+    }
+    
+    ElementType getElement(IndexType i, IndexType j) const {
+        return 0;
+    }
+    
+    void setElement (IndexType i, IndexType j, ElementType v) {}
+    
+    void setSizes(IndexType rows, IndexType cols) {}
+};
 
 bool ReadMatrx(const InputFile&, Matrix&) {
     return false;
@@ -50,7 +73,22 @@ bool WriteMatrix(OutputFile&, const Matrix&) {
     return false;
 }
 
-void AddMatrix(const Matrix&, const Matrix&, Matrix&) {};
+void AddMatrix(const Matrix& a, const Matrix& b, Matrix& c) {
+    assert(a.getNumColumns() == b.getNumColumns() &&
+           a.getNumRows() == b.getNumRows() && "Invalid matrix sizes");
+
+    c.setSizes(a.getNumRows(), a.getNumColumns());
+    for (IndexType i = 0; i < a.getNumColumns(); ++i) {
+        for (IndexType j = 0; j < a.getNumRows(); ++j) {
+            ElementType aij = a.getElement(i, j);
+            ElementType bij = b.getElement(i, j);
+            assert(std::numeric_limits<ElementType>::max() - aij >= bij && 
+                    std::numeric_limits<ElementType>::min() + bij <= aij);
+
+            c.setElement(i, j, aij + bij);
+        }
+    }
+};
 
 void MulMatrix(const Matrix&, const Matrix&, Matrix&) {};
 
