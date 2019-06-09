@@ -65,7 +65,17 @@ struct Matrix {
     void setSizes(IndexType rows, IndexType cols) {}
 };
 
-bool ReadMatrx(const InputFile&, Matrix&) {
+bool ReadMatrx(const InputFile& f, Matrix& a) {
+    
+    assert(f.is_open);
+    IndexType n, m;
+    if (! f.readNumber(n) || ! f.readNumber(m)) {
+        ErrorReport("Could not read form file " + f.getName());
+    }
+
+    a.setSizes(n, m);
+    //
+
     return false;
 }
 
