@@ -37,6 +37,11 @@ typedef unsigned int IndexType;
 typedef double ElementType;
 
 
+void ErrorReport(const std::string& msg) {
+    std::cerr << "ERROR: " << msg << std::endl;
+}
+
+
 struct InputFile { 
 
 private:
@@ -47,7 +52,7 @@ public:
     InputFile(const std::string& n)
         : name(n)
     {
-        file.open(name, std::ifstream::in);
+        file.open(n);
     }
     
     bool isOpen() const {
@@ -77,7 +82,7 @@ public:
     OutputFile(const std::string& n)
         : name(n)
     {
-        file.open(name, std::ifstream::out);
+        file.open(name);
     }
     
     bool isOpen() const {
@@ -111,7 +116,6 @@ public:
         : rows(0)
         , columns(0)
     {
-
     }
 
     IndexType getNumRows() const {
@@ -123,27 +127,39 @@ public:
     }
     
     ElementType getElement(IndexType i, IndexType j) const {
-        if (i < rows && j < columns) {
-            assert(i < matrix.size() && j < matrix[i].size());
-            return matrix[i][j];
+        if (i >= rows || j >= columns) {
+            ErrorReport("Index out of range");
+            exit(4);
         }
-        return 0;
+        assert(i < matrix.size() && j < matrix[i].size());
+        return matrix[i][j];
     }
     
-    void setElement (IndexType i, IndexType j, ElementType v) {}
+    void setElement (IndexType i, IndexType j, ElementType v) {
+        if (i >= rows || j >= columns) {
+            ErrorReport("Index out of range");
+            exit(4);
+        }
+        assert(i < matrix.size() && j < matrix[i].size());
+        matrix[i][j] = v; 
+    }
     
-    void setSizes(IndexType rows, IndexType cols) {}
+    void setSizes(IndexType r, IndexType c) {
+        assert(rows == 0 && columns == 0);
+        rows = r;
+        columns = c;
+        matrix.resize(rows);
+        for (IndexType i = 0; i < columns; ++i) {
+            matrix[i].resize(columns);
+        }
+    }
     
 };
-
-void ErrorReport(const std::string& msg) {
-    std::cerr << "ERROR: " << msg << std::endl;
-}
 
 bool ReadMatrx(InputFile& f, Matrix& a) {
     
     assert(f.isOpen());
-    IndexType n = 0 , m = 0, t = 0;
+    ElementType n = 0 , m = 0, t = 0;
     if (! f.readNumber(m) || ! f.readNumber(n)) {
         ErrorReport("Could not read form file " + f.getName());
         return false;
