@@ -43,8 +43,8 @@ struct InputFile {
         return false;
     }
 
-    ElementType readNumber(ElementType& num) const {
-        return 0;
+    bool readNumber(ElementType& num) const {
+        return false;
     }
 
     std::string getName () const {
@@ -53,7 +53,20 @@ struct InputFile {
 };
 
 struct OutputFile {
+    
     OutputFile(const std::string& name) {}
+
+    bool is_open() const {
+        return false;
+    }
+
+    bool writeNumber(ElementType num) {
+        return false;
+    }
+
+    std::string getName () const {
+        return "";
+    }
 };
 
 struct Matrix {
