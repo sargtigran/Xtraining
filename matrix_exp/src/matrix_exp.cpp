@@ -34,7 +34,7 @@
 #include <vector>
 
 typedef unsigned int IndexType;
-typedef unsigned int ElementType;
+typedef double ElementType;
 
 
 struct InputFile { 
