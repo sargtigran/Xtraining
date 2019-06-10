@@ -26,6 +26,10 @@
  *
  */
 
+//Project headers
+#include "matrix_exp.hpp"
+
+//Standard headers
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
@@ -33,128 +37,9 @@
 #include <limits>
 #include <vector>
 
-typedef unsigned int IndexType;
-typedef double ElementType;
-
-
 void ErrorReport(const std::string& msg) {
     std::cerr << "ERROR: " << msg << std::endl;
 }
-
-
-struct InputFile { 
-
-private:
-    std::ifstream file;
-    std::string name;
-
-public:
-    InputFile(const std::string& n)
-        : name(n)
-    {
-        file.open(n);
-    }
-    
-    bool isOpen() const {
-        return file.is_open();
-    }
-
-    bool readNumber(ElementType& num) {
-        if (file.good()) {
-            file >> num;
-            return true;
-        }
-        return false;
-    }
-
-    std::string getName () const {
-        return name;
-    }
-};
-
-struct OutputFile {
-
-private:
-    std::ofstream file;
-    std::string name;
-
-public:
-    OutputFile(const std::string& n)
-        : name(n)
-    {
-        file.open(name);
-    }
-    
-    bool isOpen() const {
-        return file.is_open();
-    }
-
-    bool writeNumber(ElementType num) {
-        if (file.good()) {
-            file << num << ", ";
-            return true;
-        }
-        return false;
-    }
-
-    std::string getName () const {
-        return name;
-    }
-};
-
-struct Matrix {
-    
-    typedef std::vector<std::vector<ElementType>> MatrixType;
-
-private:
-    IndexType rows;
-    IndexType columns;
-    MatrixType matrix;
-
-public:
-    Matrix() 
-        : rows(0)
-        , columns(0)
-    {
-    }
-
-    IndexType getNumRows() const {
-        return rows;
-    }
-
-    IndexType getNumColumns() const {
-        return columns;
-    }
-    
-    ElementType getElement(IndexType i, IndexType j) const {
-        if (i >= rows || j >= columns) {
-            ErrorReport("Index out of range");
-            exit(4);
-        }
-        assert(i < matrix.size() && j < matrix[i].size());
-        return matrix[i][j];
-    }
-    
-    void setElement (IndexType i, IndexType j, ElementType v) {
-        if (i >= rows || j >= columns) {
-            ErrorReport("Index out of range");
-            exit(4);
-        }
-        assert(i < matrix.size() && j < matrix[i].size());
-        matrix[i][j] = v; 
-    }
-    
-    void setSizes(IndexType r, IndexType c) {
-        assert(rows == 0 && columns == 0);
-        rows = r;
-        columns = c;
-        matrix.resize(rows);
-        for (IndexType i = 0; i < columns; ++i) {
-            matrix[i].resize(columns);
-        }
-    }
-    
-};
 
 bool ReadMatrx(InputFile& f, Matrix& a) {
     
@@ -164,17 +49,20 @@ bool ReadMatrx(InputFile& f, Matrix& a) {
         ErrorReport("Could not read form file " + f.getName());
         return false;
     }
-
+    
+    std::cout << f.getName() << " : " << m << "x" << n << std::endl;
     a.setSizes(m, n);
     for (IndexType i = 0; i < m; ++i) {
         for (IndexType j = 0; j < n; ++j) {
             if (f.readNumber(t)) {
+                std::cout << t << ", ";
                 a.setElement(i, j, t);
             } else {
                 ErrorReport("Could not read form file " + f.getName());
                 return false;
             }
         }
+        std::cout << std::endl;
     }
 
     return true;
@@ -227,14 +115,13 @@ void MulMatrix(const Matrix& a, const Matrix& b, Matrix& c) {
 };
 
 bool VerifyCompatibility(const Matrix& a, const Matrix& b, const Matrix& c, const Matrix& d) {
+    std::cout << a.getNumColumns() << "  " << c.getNumRows() << std::endl;
     return a.getNumRows() == b.getNumRows() && a.getNumColumns() == b.getNumColumns()
              && c.getNumRows() == d.getNumRows() && c.getNumColumns() == d.getNumColumns()
              && a.getNumColumns() == c.getNumRows();
 }
 
-
-
-int main ()
+void MatrixExp ()
 {
     InputFile A("A.txt"), B("B.txt"), C("C.txt"), D("D.txt");
     OutputFile Y("Y.txt");
@@ -257,5 +144,5 @@ int main ()
         exit(2);
     }
 
-    return 0;
+    std::cout << "Ending..." << std::endl;
 }
