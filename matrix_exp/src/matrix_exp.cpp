@@ -85,7 +85,7 @@ bool ReadMatrx(const InputFile& f, Matrix& a) {
     assert(f.is_open());
     IndexType n = 0 , m = 0, t = 0;
     if (! f.readNumber(m) || ! f.readNumber(n)) {
-        ErrorReport("Could not read form file ");// + f.getName());
+        ErrorReport("Could not read form file " + f.getName());
         return false;
     }
 
@@ -94,6 +94,9 @@ bool ReadMatrx(const InputFile& f, Matrix& a) {
         for (IndexType j = 0; j < n; ++j) {
             if (f.readNumber(t)) {
                 a.setElement(i, j, t);
+            } else {
+                ErrorReport("Could not read form file " + f.getName());
+                return false;
             }
         }
     }
@@ -101,8 +104,17 @@ bool ReadMatrx(const InputFile& f, Matrix& a) {
     return true;
 }
 
-bool WriteMatrix(OutputFile&, const Matrix&) {
-    return false;
+bool WriteMatrix(OutputFile& f, const Matrix& a) {
+    if (! f.is_open()) {
+        ErrorReport("Could not write to file " + f.getName());
+        return false;
+    }
+    for (IndexType i = 0; i < a.getNumRows(); ++i) {
+        for (IndexType j = 0; j < a.getNumColumns(); ++j) {
+            f.writeNumber(a.getElement(i, j));
+        }
+    }
+    return true;
 }
 
 void AddMatrix(const Matrix& a, const Matrix& b, Matrix& c) {
