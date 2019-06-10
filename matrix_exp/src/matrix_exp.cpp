@@ -31,6 +31,7 @@
 #include <cstdlib>
 #include <cassert>
 #include <limits>
+#include <vector>
 
 typedef unsigned int IndexType;
 typedef unsigned int ElementType;
@@ -98,15 +99,34 @@ public:
 
 struct Matrix {
     
+    typedef std::vector<std::vector<ElementType>> MatrixType;
+
+private:
+    IndexType rows;
+    IndexType columns;
+    MatrixType matrix;
+
+public:
+    Matrix() 
+        : rows(0)
+        , columns(0)
+    {
+
+    }
+
     IndexType getNumRows() const {
-        return 0;
+        return rows;
     }
 
     IndexType getNumColumns() const {
-        return 0;
+        return columns;
     }
     
     ElementType getElement(IndexType i, IndexType j) const {
+        if (i < rows && j < columns) {
+            assert(i < matrix.size() && j < matrix[i].size());
+            return matrix[i][j];
+        }
         return 0;
     }
     
