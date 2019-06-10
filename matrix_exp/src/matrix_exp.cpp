@@ -36,9 +36,19 @@ typedef unsigned int ElementType;
 
 
 struct InputFile { 
+    
     InputFile(const std::string& name) {}
-    bool is_open() {
+    
+    bool is_open() const {
         return false;
+    }
+
+    ElementType readNumber(ElementType& num) const {
+        return 0;
+    }
+
+    std::string getName () const {
+        return "";
     }
 };
 
@@ -63,20 +73,32 @@ struct Matrix {
     void setElement (IndexType i, IndexType j, ElementType v) {}
     
     void setSizes(IndexType rows, IndexType cols) {}
+    
 };
+
+void ErrorReport(const std::string& msg) {
+    std::cerr << "ERROR: " << msg << std::endl;
+}
 
 bool ReadMatrx(const InputFile& f, Matrix& a) {
     
-    assert(f.is_open);
-    IndexType n, m;
-    if (! f.readNumber(n) || ! f.readNumber(m)) {
-        ErrorReport("Could not read form file " + f.getName());
+    assert(f.is_open());
+    IndexType n = 0 , m = 0, t = 0;
+    if (! f.readNumber(m) || ! f.readNumber(n)) {
+        ErrorReport("Could not read form file ");// + f.getName());
+        return false;
     }
 
-    a.setSizes(n, m);
-    //
+    a.setSizes(m, n);
+    for (IndexType i = 0; i < m; ++i) {
+        for (IndexType j = 0; j < n; ++j) {
+            if (f.readNumber(t)) {
+                a.setElement(i, j, t);
+            }
+        }
+    }
 
-    return false;
+    return true;
 }
 
 bool WriteMatrix(OutputFile&, const Matrix&) {
@@ -120,10 +142,6 @@ bool VerifyCompatibility(const Matrix& a, const Matrix& b, const Matrix& c, cons
     return a.getNumRows() == b.getNumRows() && a.getNumColumns() == b.getNumColumns()
              && c.getNumRows() == d.getNumRows() && c.getNumColumns() == d.getNumColumns()
              && a.getNumColumns() == c.getNumRows();
-}
-
-void ErrorReport(const std::string& msg) {
-    std::cerr << "ERROR: " << msg << std::endl;
 }
 
 
