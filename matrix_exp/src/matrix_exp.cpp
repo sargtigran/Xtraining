@@ -27,6 +27,7 @@
  */
 
 #include <iostream>
+#include <fstream>
 #include <cstdlib>
 #include <cassert>
 #include <limits>
@@ -36,36 +37,62 @@ typedef unsigned int ElementType;
 
 
 struct InputFile { 
+
+private:
+    std::ifstream file;
+    std::string name;
+
+public:
+    InputFile(const std::string& n)
+        : name(n)
+    {
+        file.open(name, std::ifstream::in);
+    }
     
-    InputFile(const std::string& name) {}
-    
-    bool is_open() const {
-        return false;
+    bool isOpen() const {
+        return file.is_open();
     }
 
-    bool readNumber(ElementType& num) const {
+    bool readNumber(ElementType& num) {
+        if (file.good()) {
+            file >> num;
+            return true;
+        }
         return false;
     }
 
     std::string getName () const {
-        return "";
+        return name;
     }
 };
 
 struct OutputFile {
-    
-    OutputFile(const std::string& name) {}
 
-    bool is_open() const {
-        return false;
+private:
+    std::ofstream file;
+    std::string name;
+
+public:
+    OutputFile(const std::string& n)
+        : name(n)
+    {
+        file.open(name, std::ifstream::out);
+    }
+    
+    bool isOpen() const {
+        return file.is_open();
     }
 
     bool writeNumber(ElementType num) {
+        if (file.good()) {
+            file << num << ", ";
+            return true;
+        }
         return false;
     }
 
     std::string getName () const {
-        return "";
+        return name;
     }
 };
 
@@ -93,9 +120,9 @@ void ErrorReport(const std::string& msg) {
     std::cerr << "ERROR: " << msg << std::endl;
 }
 
-bool ReadMatrx(const InputFile& f, Matrix& a) {
+bool ReadMatrx(InputFile& f, Matrix& a) {
     
-    assert(f.is_open());
+    assert(f.isOpen());
     IndexType n = 0 , m = 0, t = 0;
     if (! f.readNumber(m) || ! f.readNumber(n)) {
         ErrorReport("Could not read form file " + f.getName());
@@ -118,7 +145,7 @@ bool ReadMatrx(const InputFile& f, Matrix& a) {
 }
 
 bool WriteMatrix(OutputFile& f, const Matrix& a) {
-    if (! f.is_open()) {
+    if (! f.isOpen()) {
         ErrorReport("Could not write to file " + f.getName());
         return false;
     }
@@ -176,7 +203,7 @@ int main ()
     InputFile A("A.txt"), B("B.txt"), C("C.txt"), D("D.txt");
     OutputFile Y("Y.txt");
 
-    if (A.is_open() && B.is_open() && C.is_open() && D.is_open()) {
+    if (A.isOpen() && B.isOpen() && C.isOpen() && D.isOpen()) {
         Matrix a, b, c, d;
         while (ReadMatrx(A, a) && ReadMatrx(B, b) && ReadMatrx(C, c) && ReadMatrx(D, d)) {
             if (! VerifyCompatibility(a, b, c, d)) {
