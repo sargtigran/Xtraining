@@ -39,7 +39,29 @@ void GenerateInputFiles() {
     }
 }
 
-void Verify() {}
+bool IsMatrixEqual(const Matrix& y, const Matrix& g, IndexType& row, IndexType& col) {
+    return true;
+}
+
+void Verify() {
+    InputFile Y("Y.txt"), G("Y.gold");
+    if (!Y.isOpen() || ! G.isOpen()) {
+        ErrorReport("FAILED (Input files are not opened correctly)");
+        exit(1);
+    }
+    
+    Matrix y, g;
+    IndexType row = 0, col = 0;
+    for(IndexType i = 0; (ReadMatrix(Y, y) && ReadMatrix(G, g)); ++i) {
+        std::cout << "Comparing matrix: " << i << " ........... ";
+        if (IsMatrixEqual(y, g, row, col)) {
+            std::cout << "PASS" << std::endl;
+        } else {
+            std::cout << "FAIL" << std::endl;
+            std::cout << "\t Faild in position [" << row << "][" << col << "] of matrix: " << i << std::endl; 
+        }
+    }   
+}
 
 int main(int argc, char* argv[])
 {

@@ -19,7 +19,7 @@ struct Matrix;
 /// Function declarations
 void ErrorReport(const std::string& msg);
 
-bool ReadMatrx(InputFile& f, Matrix& a);
+bool ReadMatrix(InputFile& f, Matrix& a);
 
 bool WriteMatrix(OutputFile& f, const Matrix& a);
 

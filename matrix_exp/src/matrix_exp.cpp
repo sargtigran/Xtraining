@@ -41,7 +41,7 @@ void ErrorReport(const std::string& msg) {
     std::cerr << "ERROR: " << msg << std::endl;
 }
 
-bool ReadMatrx(InputFile& f, Matrix& a) {
+bool ReadMatrix(InputFile& f, Matrix& a) {
     
     assert(f.isOpen());
     ElementType n = 0 , m = 0, t = 0;
@@ -130,7 +130,7 @@ void MatrixExp ()
 
     if (A.isOpen() && B.isOpen() && C.isOpen() && D.isOpen()) {
         Matrix a, b, c, d;
-        while (ReadMatrx(A, a) && ReadMatrx(B, b) && ReadMatrx(C, c) && ReadMatrx(D, d)) {
+        while (ReadMatrix(A, a) && ReadMatrix(B, b) && ReadMatrix(C, c) && ReadMatrix(D, d)) {
             if (! VerifyCompatibility(a, b, c, d)) {
                 ErrorReport("Incompatible matrices are read");
                 exit(1); 
