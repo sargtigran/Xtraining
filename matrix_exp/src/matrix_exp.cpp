@@ -49,6 +49,7 @@ bool ReadMatrx(InputFile& f, Matrix& a) {
         return false;
     }
     
+    a.clear();
     a.setSizes(m, n);
     for (IndexType i = 0; i < m; ++i) {
         for (IndexType j = 0; j < n; ++j) {
@@ -76,6 +77,7 @@ bool WriteMatrix(OutputFile& f, const Matrix& a) {
         }
         f.writeLine("\n");
     }
+    f.writeLine("\n");
     return true;
 }
 

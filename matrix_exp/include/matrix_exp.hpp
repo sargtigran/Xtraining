@@ -132,6 +132,15 @@ public:
         , columns(0)
     {}
 
+    void clear() {
+        rows = 0;
+        columns = 0;
+        for (IndexType i = 0; i < rows; ++i) {
+            matrix[i].clear();
+        }
+        matrix.clear();
+    }
+
     IndexType getNumRows() const {
         return rows;
     }

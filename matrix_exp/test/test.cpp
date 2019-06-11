@@ -11,7 +11,7 @@ void FillMatrix (IndexType N, IndexType M, OutputFile& file, IndexType i) {
     for (IndexType n = 0; n < N; ++n) {
         for (IndexType m = 0; m < M; ++m) {
             if (m != 0) { file.writeLine(","); }
-            file.writeNumber(i);
+            file.writeNumber(1);
         }
         file.writeLine("\n"); 
     }
@@ -21,7 +21,7 @@ void FillMatrix (IndexType N, IndexType M, OutputFile& file, IndexType i) {
 void GenerateInputFiles() {
     
     OutputFile a("A.txt"), b("B.txt"), c("C.txt"), d("D.txt");
-    const IndexType matrixCnt = 10;
+    const IndexType matrixCnt = 2;
     const IndexType N = 10, M = 5, K = 15;
 
     for (IndexType i = 0; i < matrixCnt; ++i) {
@@ -36,6 +36,6 @@ int main(int argc, char* argv[])
 {
 
     GenerateInputFiles();
-    //MatrixExp();
+    MatrixExp();
     return 0;
 }
