@@ -4,10 +4,14 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <cmath>
 
-double Rand(double min, double max)
+
+typedef double EpsilonType;
+
+ElementType Rand(ElementType min, ElementType max)
 {
-    double f = (double)std::rand() / RAND_MAX;
+    ElementType f = (ElementType)std::rand() / RAND_MAX;
     return min + f * (max - min);
 }
 
@@ -39,11 +43,23 @@ void GenerateInputFiles() {
     }
 }
 
-bool IsMatrixEqual(const Matrix& y, const Matrix& g, IndexType& row, IndexType& col) {
+bool IsMatrixEqual(const Matrix& y, const Matrix& g, IndexType& row, IndexType& col, EpsilonType epsilon) {
+
+    if (y.getNumRows() != g.getNumRows() || y.getNumColumns() != g.getNumColumns()) {
+        return false;
+    }
+
+    for (row = 0; row < g.getNumRows(); ++row) {
+        for (col = 0; col < g.getNumColumns(); ++col) {
+            if (std::abs(y.getElement(row, col) - g.getElement(row, col)) >= epsilon) {
+                return false;
+            }
+        }
+    }
     return true;
 }
 
-void Verify() {
+void Verify(EpsilonType epsilon) {
     InputFile Y("Y.txt"), G("Y.gold");
     if (!Y.isOpen() || ! G.isOpen()) {
         ErrorReport("FAILED (Input files are not opened correctly)");
@@ -54,7 +70,7 @@ void Verify() {
     IndexType row = 0, col = 0;
     for(IndexType i = 0; (ReadMatrix(Y, y) && ReadMatrix(G, g)); ++i) {
         std::cout << "Comparing matrix: " << i << " ........... ";
-        if (IsMatrixEqual(y, g, row, col)) {
+        if (IsMatrixEqual(y, g, row, col, epsilon)) {
             std::cout << "PASS" << std::endl;
         } else {
             std::cout << "FAIL" << std::endl;
@@ -67,6 +83,6 @@ int main(int argc, char* argv[])
 {
     GenerateInputFiles();
     MatrixExp();
-    Verify();
+    Verify(0.00000000001);
     return 0;
 }
