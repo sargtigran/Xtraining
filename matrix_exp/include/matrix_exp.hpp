@@ -49,10 +49,15 @@ public:
         return file.is_open();
     }
     
-
     bool readNumber(ElementType& num) {
         while (file.good() && ! std::isdigit(file.peek())) {
-            file.ignore(1);
+            if (file.peek() == '#') {
+                //ignore comments
+                file.ignore(256, '\n');
+            } else {
+                //ignore separators 
+                file.ignore(1);
+            }
         }
 
         if (file.good()) {
@@ -94,9 +99,9 @@ public:
         return false;
     }
 
-    bool writeSymbol(char c) {
+    bool writeLine(const std::string& s) {
         if (file.good()) {
-            file << c;
+            file << s;
             return true;
         }
         return false;
@@ -138,6 +143,7 @@ public:
     ElementType getElement(IndexType i, IndexType j) const {
         if (i >= rows || j >= columns) {
             ErrorReport("Index out of range");
+            assert(false);
             exit(4);
         }
         assert(i < matrix.size() && j < matrix[i].size());
@@ -147,6 +153,7 @@ public:
     void setElement (IndexType i, IndexType j, ElementType v) {
         if (i >= rows || j >= columns) {
             ErrorReport("Index out of range");
+            assert(false);
             exit(4);
         }
         assert(i < matrix.size());

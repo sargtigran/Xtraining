@@ -71,10 +71,10 @@ bool WriteMatrix(OutputFile& f, const Matrix& a) {
     }
     for (IndexType i = 0; i < a.getNumRows(); ++i) {
         for (IndexType j = 0; j < a.getNumColumns(); ++j) {
-            if (j != 0) { f.writeSymbol(','); } 
+            if (j != 0) { f.writeLine(","); } 
             f.writeNumber(a.getElement(i, j));
         }
-        f.writeSymbol('\n');
+        f.writeLine("\n");
     }
     return true;
 }
@@ -88,8 +88,8 @@ void AddMatrix(const Matrix& a, const Matrix& b, Matrix& c) {
         for (IndexType j = 0; j < a.getNumColumns(); ++j) {
             ElementType aij = a.getElement(i, j);
             ElementType bij = b.getElement(i, j);
-            assert(std::numeric_limits<ElementType>::max() - aij >= bij && 
-                    std::numeric_limits<ElementType>::min() + bij <= aij);
+            assert(std::numeric_limits<ElementType>::max() - aij >= bij); 
+            //assert(std::numeric_limits<ElementType>::min() + bij <= aij);
 
             c.setElement(i, j, aij + bij);
         }
