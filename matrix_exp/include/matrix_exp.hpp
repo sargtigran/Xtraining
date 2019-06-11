@@ -51,18 +51,15 @@ public:
     
 
     bool readNumber(ElementType& num) {
-        if (file.good()) {
-            char c;
-            do {
-                file.get(c);
-            } while (file.good() && ! std::isdigit(c));
+        while (file.good() && ! std::isdigit(file.peek())) {
+            file.ignore(1);
+        }
 
-            if (file.good()) {
-                file.putback(c);
-                file >> num;
-            }
+        if (file.good()) {
+            file >> num;
             return true;
         }
+
         return false;
     }
 
@@ -91,7 +88,15 @@ public:
 
     bool writeNumber(ElementType num) {
         if (file.good()) {
-            file << num << ", ";
+            file << num;
+            return true;
+        }
+        return false;
+    }
+
+    bool writeSymbol(char c) {
+        if (file.good()) {
+            file << c;
             return true;
         }
         return false;
@@ -144,7 +149,8 @@ public:
             ErrorReport("Index out of range");
             exit(4);
         }
-        assert(i < matrix.size() && j < matrix[i].size());
+        assert(i < matrix.size());
+        assert(j < matrix[i].size());
         matrix[i][j] = v; 
     }
     
@@ -153,10 +159,21 @@ public:
         rows = r;
         columns = c;
         matrix.resize(rows);
-        for (IndexType i = 0; i < columns; ++i) {
+        for (IndexType i = 0; i < rows; ++i) {
             matrix[i].resize(columns);
-        //std::cout << "ROW: " << matrix.size() << "COL: " << matrix[i].size() << std::endl;
         }
     }
+
+
+    void dump() {
+        std::cout << rows << "x" << columns << std::endl;
+        for (IndexType i = 0; i < rows; ++i) {
+            for (IndexType j = 0; j < columns; ++j) {
+                std::cout << matrix[i][j] << " ";
+                std::cout.flush();            
+            }
+            std::cout << std::endl;
+        }
+    } 
 };
 #endif // MATRIX_EXP_HPP

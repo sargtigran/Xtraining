@@ -16,18 +16,19 @@ TEST_PATH = $(BASE_PATH)/test
 
 
 CC=g++
+DEBUG=-g
 
 all: $(PROG)
 
 $(PROG): $(OBJECTS)
 	@mkdir -p $(BIN_PATH)
 	@mkdir -p $(LIB_PATH)
-	$(CC) -shared -fPIC $(OBJ_PATH)/$(OBJECTS) -o $(LIB_PATH)/lib$(PROG).so
-	$(CC) -L$(LIB_PATH) -I$(INCLUDE_PATH) $(TEST_PATH)/$(TEST_SRC) -o $(BIN_PATH)/$(PROG) $(LIBS)
+	$(CC) -shared $(DEBUG) -fPIC $(OBJ_PATH)/$(OBJECTS) -o $(LIB_PATH)/lib$(PROG).so
+	$(CC) $(DEBUG) -L$(LIB_PATH) -I$(INCLUDE_PATH) $(TEST_PATH)/$(TEST_SRC) -o $(BIN_PATH)/$(PROG) $(LIBS)
 
 %.o: $(SRC_PATH)/%.cpp
 	@mkdir -p $(OBJ_PATH)
-	$(CC) -c -fPIC $(SRC_PATH)/$(SOURCES) -I$(INCLUDE_PATH) -o $(OBJ_PATH)/$@ 
+	$(CC) -c $(DEBUG) -fPIC $(SRC_PATH)/$(SOURCES) -I$(INCLUDE_PATH) -o $(OBJ_PATH)/$@ 
 	
 
 .PHONY: claen

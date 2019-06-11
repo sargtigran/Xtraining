@@ -46,23 +46,19 @@ bool ReadMatrx(InputFile& f, Matrix& a) {
     assert(f.isOpen());
     ElementType n = 0 , m = 0, t = 0;
     if (! f.readNumber(m) || ! f.readNumber(n)) {
-        ErrorReport("Could not read form file " + f.getName());
         return false;
     }
     
-    std::cout << f.getName() << " : " << m << "x" << n << std::endl;
     a.setSizes(m, n);
     for (IndexType i = 0; i < m; ++i) {
         for (IndexType j = 0; j < n; ++j) {
             if (f.readNumber(t)) {
-                std::cout << t << ", ";
                 a.setElement(i, j, t);
             } else {
                 ErrorReport("Could not read form file " + f.getName());
                 return false;
             }
         }
-        std::cout << std::endl;
     }
 
     return true;
@@ -75,8 +71,10 @@ bool WriteMatrix(OutputFile& f, const Matrix& a) {
     }
     for (IndexType i = 0; i < a.getNumRows(); ++i) {
         for (IndexType j = 0; j < a.getNumColumns(); ++j) {
+            if (j != 0) { f.writeSymbol(','); } 
             f.writeNumber(a.getElement(i, j));
         }
+        f.writeSymbol('\n');
     }
     return true;
 }
@@ -86,8 +84,8 @@ void AddMatrix(const Matrix& a, const Matrix& b, Matrix& c) {
            a.getNumRows() == b.getNumRows() && "Invalid matrix sizes");
 
     c.setSizes(a.getNumRows(), a.getNumColumns());
-    for (IndexType i = 0; i < a.getNumColumns(); ++i) {
-        for (IndexType j = 0; j < a.getNumRows(); ++j) {
+    for (IndexType i = 0; i < a.getNumRows(); ++i) {
+        for (IndexType j = 0; j < a.getNumColumns(); ++j) {
             ElementType aij = a.getElement(i, j);
             ElementType bij = b.getElement(i, j);
             assert(std::numeric_limits<ElementType>::max() - aij >= bij && 
@@ -115,7 +113,6 @@ void MulMatrix(const Matrix& a, const Matrix& b, Matrix& c) {
 };
 
 bool VerifyCompatibility(const Matrix& a, const Matrix& b, const Matrix& c, const Matrix& d) {
-    std::cout << a.getNumColumns() << "  " << c.getNumRows() << std::endl;
     return a.getNumRows() == b.getNumRows() && a.getNumColumns() == b.getNumColumns()
              && c.getNumRows() == d.getNumRows() && c.getNumColumns() == d.getNumColumns()
              && a.getNumColumns() == c.getNumRows();
@@ -143,6 +140,4 @@ void MatrixExp ()
         ErrorReport("Files are incorrect");
         exit(2);
     }
-
-    std::cout << "Ending..." << std::endl;
 }
