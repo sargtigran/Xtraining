@@ -1,9 +1,9 @@
 
 PROG := matrix_exp
+TARGET := libmatrix_exp.so
 SOURCES := matrix_exp.cpp
 TEST_SRC := test.cpp
 HEADERS := matrix_exp.hpp
-LIBS := -lmatrix_exp
 OBJECTS = $(SOURCES:.cpp=.o)
 
 BASE_PATH := .
@@ -15,23 +15,28 @@ LIB_PATH = $(BASE_PATH)/libs
 TEST_PATH = $(BASE_PATH)/test
 
 
-CC=g++
-DEBUG=-g
+CC = g++
+DEBUG = -g
+LIBS = -lmatrix_exp
 
-all: $(PROG)
+all: $(LIB_PATH)/$(TARGET)
 
-$(PROG): $(OBJECTS)
+$(LIB_PATH)/$(TARGET): $(OBJ_PATH)/$(OBJECTS)
 	@mkdir -p $(BIN_PATH)
 	@mkdir -p $(LIB_PATH)
-	$(CC) -shared $(DEBUG) -fPIC $(OBJ_PATH)/$(OBJECTS) -o $(LIB_PATH)/lib$(PROG).so
-	$(CC) $(DEBUG) -L$(LIB_PATH) -I$(INCLUDE_PATH) $(TEST_PATH)/$(TEST_SRC) -o $(BIN_PATH)/$(PROG) $(LIBS)
+	$(CC) -shared $(DEBUG) -fPIC $(OBJ_PATH)/$(OBJECTS) -o $@
 
-%.o: $(SRC_PATH)/%.cpp
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp
 	@mkdir -p $(OBJ_PATH)
-	$(CC) -c $(DEBUG) -fPIC $(SRC_PATH)/$(SOURCES) -I$(INCLUDE_PATH) -o $(OBJ_PATH)/$@ 
+	$(CC) -c $(DEBUG) -fPIC $^ -I$(INCLUDE_PATH) -o $@ 
 	
 
 .PHONY: claen
 clean:
 	rm -rf $(OBJ_PATH) $(BIN_PATH) $(LIB_PATH)
 
+test: $(BIN_PATH)/$(PROG)
+	@cd $(TEST_PATH) && ../$(BIN_PATH)/$(PROG)
+
+$(BIN_PATH)/$(PROG): $(TEST_PATH)/$(TEST_SRC)
+	$(CC) $(DEBUG) -L$(LIB_PATH) -I$(INCLUDE_PATH) $^ -o $@ $(LIBS)
