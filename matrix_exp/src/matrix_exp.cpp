@@ -66,10 +66,13 @@ bool ReadMatrx(InputFile& f, Matrix& a) {
 }
 
 bool WriteMatrix(OutputFile& f, const Matrix& a) {
+    static IndexType i = 0;
     if (! f.isOpen()) {
         ErrorReport("Could not write to file " + f.getName());
         return false;
     }
+    f.writeLine("# Matrix " + std::to_string(i++) + "\n");
+    f.writeLine(std::to_string(a.getNumRows()) + "," + std::to_string(a.getNumColumns()) + "\n");
     for (IndexType i = 0; i < a.getNumRows(); ++i) {
         for (IndexType j = 0; j < a.getNumColumns(); ++j) {
             if (j != 0) { f.writeLine(","); } 
