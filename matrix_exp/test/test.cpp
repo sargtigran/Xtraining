@@ -15,6 +15,11 @@ ElementType Rand(ElementType min, ElementType max)
     return min + f * (max - min);
 }
 
+void HandleCmdLineOptions(int argc, char* argv[], std::vector<std::string>& ifiles, std::string& ofile, EpsilonType& e)
+{
+
+}
+
 void FillMatrix (IndexType N, IndexType M, OutputFile& file, IndexType i) {
 
     file.writeLine("# Matrix " + std::to_string(i) + "\n");
@@ -29,7 +34,7 @@ void FillMatrix (IndexType N, IndexType M, OutputFile& file, IndexType i) {
     file.writeLine("\n"); 
 }
 
-void GenerateInputFiles() {
+void GenerateInputFiles(const std::vector<std::string>& ifiles) {
     
     OutputFile a("A.txt"), b("B.txt"), c("C.txt"), d("D.txt");
     const IndexType matrixCnt = 15;
@@ -81,8 +86,12 @@ void Verify(EpsilonType epsilon) {
 
 int main(int argc, char* argv[])
 {
-    GenerateInputFiles();
-    MatrixExp();
-    Verify(0.00000000001);
+    std::vector<std::string> ifiles;
+    std::string ofile;
+    EpsilonType e;
+    HandleCmdLineOptions(argc, argv, std::vector<std::string>& ifiles, std::string& ofile, EpsilonType& e);
+    GenerateInputFiles(ifiles);
+    MatrixExp(ifiles, ofile);
+    Verify(e);
     return 0;
 }

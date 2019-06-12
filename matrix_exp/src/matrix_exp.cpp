@@ -123,7 +123,7 @@ bool VerifyCompatibility(const Matrix& a, const Matrix& b, const Matrix& c, cons
              && a.getNumColumns() == c.getNumRows();
 }
 
-void MatrixExp ()
+void MatrixExp (const std::vector<std::string>& ifiles, const std::string& ofile)
 {
     InputFile A("A.txt"), B("B.txt"), C("C.txt"), D("D.txt");
     OutputFile Y("Y.txt");
