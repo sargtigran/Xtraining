@@ -29,7 +29,7 @@ void MulMatrix(const Matrix& a, const Matrix& b, Matrix& c);
 
 bool VerifyCompatibility(const Matrix& a, const Matrix& b, const Matrix& c, const Matrix& d);
 
-void MatrixExp ();
+void MatrixExp (const std::vector<std::string>& ifiles, const std::string& ofile);
 
 /// Input file hanling
 struct InputFile { 

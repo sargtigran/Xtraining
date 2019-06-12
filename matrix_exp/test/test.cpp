@@ -17,7 +17,7 @@ ElementType Rand(ElementType min, ElementType max)
 
 void HandleCmdLineOptions(int argc, char* argv[], std::vector<std::string>& ifiles, std::string& ofile, EpsilonType& e)
 {
-
+    e = 0.00000000001;
 }
 
 void FillMatrix (IndexType N, IndexType M, OutputFile& file, IndexType i) {
@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
     std::vector<std::string> ifiles;
     std::string ofile;
     EpsilonType e;
-    HandleCmdLineOptions(argc, argv, std::vector<std::string>& ifiles, std::string& ofile, EpsilonType& e);
+    HandleCmdLineOptions(argc, argv, ifiles, ofile, e);
     GenerateInputFiles(ifiles);
     MatrixExp(ifiles, ofile);
     Verify(e);
