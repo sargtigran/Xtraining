@@ -15,7 +15,7 @@ LIB_PATH = $(BASE_PATH)/libs
 TEST_PATH = $(BASE_PATH)/test
 
 
-CC = g++
+CC = g++ -std=c++11
 DEBUG = -g
 LIBS = -lmatrix_exp
 
@@ -36,7 +36,7 @@ clean:
 	rm -rf $(OBJ_PATH) $(BIN_PATH) $(LIB_PATH)
 
 test: $(BIN_PATH)/$(PROG)
-	@cd $(TEST_PATH) && ../$(BIN_PATH)/$(PROG)
+	@cd $(TEST_PATH) && LD_LIBRARY_PATH=../$(LIB_PATH) ../$(BIN_PATH)/$(PROG)
 
 $(BIN_PATH)/$(PROG): $(TEST_PATH)/$(TEST_SRC)
 	$(CC) $(DEBUG) -L$(LIB_PATH) -I$(INCLUDE_PATH) $^ -o $@ $(LIBS)
