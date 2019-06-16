@@ -36,7 +36,7 @@ clean:
 	rm -rf $(OBJ_PATH) $(BIN_PATH) $(LIB_PATH)
 
 test: $(BIN_PATH)/$(PROG)
-	#@cd $(TEST_PATH) && LD_LIBRARY_PATH=../$(LIB_PATH) ../$(BIN_PATH)/$(PROG)
+	@cd $(TEST_PATH) && LD_LIBRARY_PATH=../$(LIB_PATH) ../$(BIN_PATH)/$(PROG)
 
 $(BIN_PATH)/$(PROG): $(TEST_PATH)/$(TEST_SRC) $(LIB_PATH)/$(TARGET) $(INCLUDE_PATH)/$(HEADERS)
 	$(CC) $(DEBUG) -L$(LIB_PATH) -I$(INCLUDE_PATH) $< -o $@ $(LIBS)
