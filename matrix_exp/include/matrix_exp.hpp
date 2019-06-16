@@ -113,7 +113,7 @@ public:
 };
 
 
-/// Matrix structure hanling
+/// Matrix structure handling
 struct Matrix {
     
     //Type aliases 

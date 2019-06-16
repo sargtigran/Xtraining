@@ -15,9 +15,50 @@ ElementType Rand(ElementType min, ElementType max)
     return min + f * (max - min);
 }
 
-void HandleCmdLineOptions(int argc, char* argv[], std::vector<std::string>& ifiles, std::string& ofile, EpsilonType& e)
+bool HandleCmdLineOptions(int argc, char* argv[], std::vector<std::string>& ifiles, std::string& ofile, EpsilonType& e)
 {
-    e = 0.00000000001;
+    //default values
+    e = 0.0;
+    ifiles.resize(4);
+    ofile = "Y.txt";
+    ifiles[0] = "A.txt";
+    ifiles[1] = "B.txt";
+    ifiles[2] = "C.txt";
+    ifiles[3] = "D.txt";
+    
+    for (IndexType i = 1; i < argc; ++i) {
+        std::cout << argv[i] << std::endl;
+        std::string s(argv[i]);
+        if (s == "-i") {
+            for (IndexType j = 0; j < 4; ++j) {
+                if (++i < argc && argv[i][0] != '-')  {
+                    ifiles[j] = std::string(argv[i]);
+
+                } else  {
+                    ErrorReport ("Invalid input files entered" + ifiles[0] + ifiles[1] + ifiles[2] + ifiles[3]);
+                    return false;
+                }
+            }
+        } else if (s == "-o") {
+            if (++i < argc && argv[i][0] != '-')  {
+                ofile = std::string(argv[i]); 
+            } else {
+                ErrorReport ("Invalid output file");
+                return false;
+            }
+        } else if (s == "-e") {
+            if (++i < argc && argv[i][0] != '-')  {
+                e = std::stod(std::string(argv[i]));
+            } else {
+                ErrorReport ("Invalid epsilon value");
+                return false;
+            }
+        } else {
+            ErrorReport ("Invalid input data " + s);
+            return false;
+        }
+    }
+    return true;
 }
 
 void FillMatrix (IndexType N, IndexType M, OutputFile& file, IndexType i) {
@@ -56,7 +97,7 @@ bool IsMatrixEqual(const Matrix& y, const Matrix& g, IndexType& row, IndexType& 
 
     for (row = 0; row < g.getNumRows(); ++row) {
         for (col = 0; col < g.getNumColumns(); ++col) {
-            if (std::abs(y.getElement(row, col) - g.getElement(row, col)) >= epsilon) {
+            if (std::abs(y.getElement(row, col) - g.getElement(row, col)) > epsilon) {
                 return false;
             }
         }
@@ -89,9 +130,13 @@ int main(int argc, char* argv[])
     std::vector<std::string> ifiles;
     std::string ofile;
     EpsilonType e;
-    HandleCmdLineOptions(argc, argv, ifiles, ofile, e);
-    GenerateInputFiles(ifiles);
-    MatrixExp(ifiles, ofile);
-    Verify(e);
+    if (HandleCmdLineOptions(argc, argv, ifiles, ofile, e)) {
+        GenerateInputFiles(ifiles);
+        MatrixExp(ifiles, ofile);
+        Verify(e);
+    } else {
+        std::cout << "Usage:" << std::endl;
+        std::cout << "\tmatrix_exp [-i <ifile1 ifile2 ifile3 ifile4>] [-o <ofile>] [-e <epsilon>]" << std::endl;
+    }
     return 0;
 }
