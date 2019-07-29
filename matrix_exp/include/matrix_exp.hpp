@@ -31,7 +31,7 @@ bool VerifyCompatibility(const Matrix& a, const Matrix& b, const Matrix& c, cons
 
 void MatrixExp (const std::vector<std::string>& ifiles, const std::string& ofile);
 
-/// Input file hanling
+/// Input file handling
 struct InputFile { 
 
 private:

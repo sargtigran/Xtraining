@@ -17,7 +17,7 @@ TEST_PATH = $(BASE_PATH)/test
 
 CC = g++ -std=c++11
 DEBUG = -g
-LIBS = -lmatrix_exp
+LIBS = -l$(PROG)
 
 all: $(LIB_PATH)/$(TARGET)
 
