@@ -1,9 +1,9 @@
 
-PROG := jakobi
-TARGET := libjakobi.so
-SOURCES := jakobi.cpp
+PROG := linear_solving
+TARGET := liblinear_solving.so
+SOURCES := linear_solving.cpp
 TEST_SRC := test.cpp
-HEADERS := jakobi.hpp
+HEADERS := linear_solving.hpp
 OBJECTS = $(SOURCES:.cpp=.o)
 
 BASE_PATH := .

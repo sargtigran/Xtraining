@@ -1,5 +1,5 @@
 
-#include "jakobi.hpp"
+#include "linear_solving.hpp"
 #include <iostream>
 
 int main()
@@ -13,7 +13,8 @@ int main()
     Vector b = {6., 25., -11., 15.};
     Vector x = {0., 0., 0., 0.};
 
-    SolveJakobiMethod(A, b, x);
+    //SolveJakobiMethod(A, b, x);
+    SolveGaussZeidelMethod(A, b, x);
      
 
     for (int i = 0; i < x.size(); ++i) {
