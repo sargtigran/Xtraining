@@ -50,7 +50,7 @@ void SolveJakobiMethod(const Matrix& A, const Vector& b, Vector& x)
 }
 
 
-void SolveGaussZeidelMethod(const Matrix& A, const Vector& b, Vector& x)
+void SolveGaussSeidelMethod(const Matrix& A, const Vector& b, Vector& x)
 {
     Vector tmp(x.size(), 0);
     const size_t ITER_COUNT = 10000;

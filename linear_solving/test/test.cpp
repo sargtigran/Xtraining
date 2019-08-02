@@ -14,7 +14,7 @@ int main()
     Vector x = {0., 0., 0., 0.};
 
     //SolveJakobiMethod(A, b, x);
-    SolveGaussZeidelMethod(A, b, x);
+    SolveGaussSeidelMethod(A, b, x);
      
 
     for (int i = 0; i < x.size(); ++i) {
