@@ -21,14 +21,19 @@ LIBS = -l$(PROG)
 
 all: $(LIB_PATH)/$(TARGET)
 
-$(LIB_PATH)/$(TARGET): $(OBJ_PATH)/$(OBJECTS)
+#$(LIB_PATH)/$(TARGET): $(OBJ_PATH)/$(OBJECTS)
+$(LIB_PATH)/$(TARGET): $(OBJ_PATH)/$(wildcard *.o)
 	@mkdir -p $(BIN_PATH)
 	@mkdir -p $(LIB_PATH)
-	$(CC) -shared $(DEBUG) -fPIC $(OBJ_PATH)/$(OBJECTS) -o $@
+	$(CC) -shared $(DEBUG) -fPIC $(OBJ_PATH)/*.o -o $@
 
-$(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp #$(INCLUDE_PATH)/$(HEADERS)
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp $(INCLUDE_PATH)/*.hpp
 	@mkdir -p $(OBJ_PATH)
 	$(CC) -c $(DEBUG) -fPIC $< -I$(INCLUDE_PATH) -o $@ 
+#$(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp #$(INCLUDE_PATH)/$(HEADERS)
+#	@mkdir -p $(OBJ_PATH)
+#	echo $<
+#	$(CC) -c $(DEBUG) -fPIC $< -I$(INCLUDE_PATH) -o $@ 
 	
 
 .PHONY: claen
@@ -38,5 +43,5 @@ clean:
 test: $(BIN_PATH)/$(PROG)
 	@cd $(TEST_PATH) && LD_LIBRARY_PATH=../$(LIB_PATH) ../$(BIN_PATH)/$(PROG)
 
-$(BIN_PATH)/$(PROG): $(TEST_PATH)/$(TEST_SRC) $(LIB_PATH)/$(TARGET) $(INCLUDE_PATH)/$(HEADERS)
+$(BIN_PATH)/$(PROG): $(TEST_PATH)/$(TEST_SRC) $(LIB_PATH)/$(TARGET) $(INCLUDE_PATH)/*.hpp
 	$(CC) $(DEBUG) -L$(LIB_PATH) -I$(INCLUDE_PATH) $< -o $@ $(LIBS)

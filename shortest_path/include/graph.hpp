@@ -56,17 +56,11 @@ public:
     {
     }
 
-    size_t NumOfVertices() const {
-        return mVertNum;
-    }
+    size_t NumOfVertices() const;
     
-    const VertSet& vertices() const {
-        return mVertices;
-    }
+    const VertSet& vertices() const;
 
-    const EdgeSet& edges() const {
-        return mEdges;
-    }
+    const EdgeSet& edges() const;
 
 };
 
