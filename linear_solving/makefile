@@ -1,6 +1,6 @@
 
 PROG := linear_solving
-TARGET := liblinear_solving.so
+TARGET := lib${PROG}.so
 SOURCES := linear_solving.cpp
 TEST_SRC := test.cpp
 HEADERS := linear_solving.hpp
