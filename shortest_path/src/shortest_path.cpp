@@ -9,9 +9,9 @@
 
 unsigned BellmaFordMethod(const Graph& g, const Vertex& start, std::unordered_map<Vertex, Vertex>& path)
 {
-    const int max_weight = std::numeric_limits<int>::max() - 100; // dirty fix for prevent overflow
+    const WeightType max_weight = std::numeric_limits<WeightType>::infinity();
     
-    std::unordered_map<Vertex, int> distance;
+    std::unordered_map<Vertex, WeightType> distance;
     
     for (auto v : g.vertices()) {
         distance[v] = max_weight;

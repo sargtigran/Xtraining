@@ -1,23 +1,23 @@
 #ifndef __GRAPH_HPP__
 #define __GRAPH_HPP__
 
-#include <unordered_set>
-#include <set>
+#include <vector>
 
 using Vertex = unsigned;
-using VertSet = std::unordered_set<Vertex>;
+using VertSet = std::vector<Vertex>;
+using WeightType = double;
 
 
 struct Edge {
 private:
     Vertex mFirst;
     Vertex mSecond;
-    int mWeight;
+    WeightType mWeight;
 
 public:
     
     Edge() {}
-    Edge (const Vertex& f, const Vertex& s, const size_t w) 
+    Edge (const Vertex& f, const Vertex& s, const WeightType w) 
         : mFirst(f)
         , mSecond(s)
         , mWeight(w)
@@ -31,13 +31,13 @@ public:
         return mSecond;
     }
 
-    Vertex weight() {
+    WeightType weight() {
         return mWeight;
     }
 };
 
 
-using EdgeSet = std::set<Edge>;
+using EdgeSet = std::vector<Edge>;
 
 class Graph 
 {

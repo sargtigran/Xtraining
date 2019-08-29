@@ -2,13 +2,17 @@
 #include "shortest_path.hpp"
 #include "graph.hpp"
 
+#include <iostream>
+
 int main ()
 {
     VertSet verts = { 1, 2, 3, 4 };
-    Edge e(1, 2, 3);
-    EdgeSet edges;
-    edges.insert(e);
+    EdgeSet edges = { {1, 2, 1}, {1, 3, 0}, {2, 3, 1}, {1, 4, 99}, {4, 2, -300} };
 
-    //Graph g(verts, edges);
+    Graph g(verts, edges);
+    std::unordered_map<Vertex, Vertex> path;
+    Vertex start(1);
+    
+    BellmaFordMethod(g, start, path);
     return 0;
 }
