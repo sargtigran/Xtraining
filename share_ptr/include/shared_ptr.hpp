@@ -12,17 +12,24 @@ class shared_ptr
         T* obj;
     
     public:
+
         shared_ptr() noexcept
-            : count(new int(1))
+            : count(nullptr)
+            , obj(nullptr)
+        {}
+
+        shared_ptr(std::nulptr_t) noexcept 
+            : count(nullptr)
             , obj(nullptr)
         {
-                        
         }
 
         explicit shared_ptr(T* other) 
         {
+            if (other == nullptr) return;
+
             if (other == obj) {
-                *count++;
+                (*count)++;
             } else {
                 count = new int(1);
                 obj = other;
@@ -35,13 +42,20 @@ class shared_ptr
         }
 
         shared_ptr(const shared_ptr& other) noexcept
+            : obj(other.obj)
+            , count(other.count)
         {
+            if (count) { (*count)++; }
         }
 
         shared_ptr& operator=(const shared_ptr& other) noexcept
         {
+            if (obj == other.obj) { return; }
+            reset();
+            obj = other.obj;
+            count = other.count;
+            if (count) { (*count)++; }
         }
-        
         
         shared_ptr(shared_ptr&& other) noexcept
         {
@@ -51,19 +65,20 @@ class shared_ptr
         {
         }
 
-
-        reset() 
+        void reset() 
         {
-            if (--count == 0) {
+            if (--(*count) == 0) {
                 delete obj;
                 delete count;
+                count = nullptr;
             }
             obj = nullptr;
         }
 
         int use_count()
         {
-            return *count;
+            if (count) { return *count; }
+            return 0;
         }
 
         T* get()
@@ -85,9 +100,8 @@ class shared_ptr
 
         T* operator ->() const noexcept
         {
-            
+            return obj;       
         }
-
 
 };
 
