@@ -18,7 +18,7 @@ class shared_ptr
             , obj(nullptr)
         {}
 
-        shared_ptr(std::nulptr_t) noexcept 
+        shared_ptr(std::nullptr_t) noexcept 
             : count(nullptr)
             , obj(nullptr)
         {
@@ -50,15 +50,21 @@ class shared_ptr
 
         shared_ptr& operator=(const shared_ptr& other) noexcept
         {
-            if (obj == other.obj) { return; }
-            reset();
-            obj = other.obj;
-            count = other.count;
-            if (count) { (*count)++; }
+            if (obj != other.obj) {
+                reset();
+                obj = other.obj;
+                count = other.count;
+                if (count) { (*count)++; }
+            }
+            return *this;
         }
         
         shared_ptr(shared_ptr&& other) noexcept
+            : obj(other.obj)
+            , count(other.count)
         {
+            other.obj = nullptr;
+            other.count = nullptr;
         }
 
         shared_ptr& operator=(shared_ptr&& other) noexcept
