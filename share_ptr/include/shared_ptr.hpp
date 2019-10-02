@@ -2,6 +2,8 @@
 #ifndef __SHARED_PTR__
 #define __SHARED_PTR__
 
+#include <cstddef>
+#include <iostream>
 
 template<typename T>
 class shared_ptr
@@ -24,20 +26,24 @@ class shared_ptr
         {
         }
 
-        explicit shared_ptr(T* other) 
+        explicit shared_ptr(T*& other) 
         {
             if (other == nullptr) return;
 
+            std::cout << "Constructor " << other << " == " << obj << std::endl;
             if (other == obj) {
                 (*count)++;
+                std::cout << "inicrease count: " << (*count) << std::endl;
             } else {
                 count = new int(1);
+                std::cout << "New object: " << (*count) << std::endl;
                 obj = other;
             }
         }
 
         ~shared_ptr() 
         {
+            std::cout << "shared_ptr destructor:" << *count << std::endl;
             reset();
         }
 
