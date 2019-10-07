@@ -27,18 +27,9 @@ class shared_ptr
         }
 
         explicit shared_ptr(T*& other) 
+            : count(new int(1))
+            , obj(other)
         {
-            if (other == nullptr) return;
-
-            std::cout << "Constructor " << other << " == " << obj << std::endl;
-            if (other == obj) {
-                (*count)++;
-                std::cout << "inicrease count: " << (*count) << std::endl;
-            } else {
-                count = new int(1);
-                std::cout << "New object: " << (*count) << std::endl;
-                obj = other;
-            }
         }
 
         ~shared_ptr() 
