@@ -26,7 +26,14 @@ class shared_ptr
         {
         }
 
-        explicit shared_ptr(T*& other) 
+        //explicit shared_ptr(T*& other) 
+        shared_ptr(T*& other) 
+            : count(new int(1))
+            , obj(other)
+        {
+        }
+
+        explicit shared_ptr(T*&& other) 
             : count(new int(1))
             , obj(other)
         {
@@ -66,6 +73,10 @@ class shared_ptr
 
         shared_ptr& operator=(shared_ptr&& other) noexcept
         {
+            obj = other.obj;
+            count = other.count;
+            other.obj = nullptr;
+            other.count = nullptr;
         }
 
         void reset() 
